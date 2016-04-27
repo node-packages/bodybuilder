@@ -42,11 +42,47 @@ describe('BodyBuilder ES 2x', () => {
                                   .sort('timestamp', 'asc')
                                   .build('v2')
     expect(result).to.eql({
-      sort: {
+      sort: [{
         timestamp: {
           order: 'asc'
         }
-      }
+      }]
+    })
+  })
+
+  it('should append and overwrite the sort', () => {
+    let result = new BodyBuilder().sort('timestamp', 'desc')
+        .sort([
+          {"channel": "desc"},
+          {"categories": "desc"},
+          {"content": "asc"}
+        ])
+        .sort('timestamp', 'asc')
+        .sort('timestamp', 'desc')
+        .build('v2')
+    expect(result).to.eql({
+      sort: [
+        {
+          "timestamp": {
+            "order": "desc"
+          }
+        },
+        {
+          "channel": {
+            "order": "desc"
+          }
+        },
+        {
+          "categories": {
+            "order": "desc"
+          }
+        },
+        {
+          "content": {
+            "order": "asc"
+          }
+        }
+      ]
     })
   })
 

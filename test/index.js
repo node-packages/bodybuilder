@@ -42,11 +42,11 @@ describe('BodyBuilder', () => {
                                   .sort('timestamp', 'asc')
                                   .build()
     expect(result).to.eql({
-      sort: {
+      sort: [{
         timestamp: {
           order: 'asc'
         }
-      }
+      }]
     })
   })
 

@@ -55,3 +55,29 @@ export function boolMerge(newObj, currentObj, boolType = 'and') {
 
   return mergeConcat({}, boolCurrent, boolNew)
 }
+
+/**
+ * Compound sort function into the list of sorts
+ *
+ * @private
+ *
+ * @param  {Array} current      Array of elasticsearch sorts
+ * @param  {String} field             Field name.
+ * @param  {String} [direction='asc'] A valid direction: 'asc' or 'desc'.
+ * @returns {Array} Array of elasticsearch sorts.
+ */
+export function sortMerge(current, field, direction) {
+  var payload = {[field]: {order: direction}};
+
+  var idx = _.findIndex(current, function (o) {
+    return o[field] != undefined;
+  });
+
+  if(idx == -1) {
+    current.push(payload);
+  } else {
+    _.extend(current[idx], payload);
+  }
+
+  return current;
+}
